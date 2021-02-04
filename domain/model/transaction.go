@@ -14,6 +14,12 @@ const (
 	TransactionConfirmed string = "confirmed"
 )
 
+type TransactionRepositoryInterface interface {
+	Register(transaction *Transaction) error
+	Save(transaction *Transaction) error
+	Find(id string) (*Transaction, error)
+}
+
 type Transactions struct {
 	Transaction []Transaction
 }
@@ -76,9 +82,17 @@ func (t *Transaction) Complete() error {
 	return err
 }
 
-func (t *Transaction) Cancel() error {
+func (t *Transaction) Confirm() error {
+	t.Status = TransactionConfirmed
+	t.UpdatedAt = time.Now()
+	err := t.isValid()
+	return err
+}
+
+func (t *Transaction) Cancel(description string) error {
 	t.Status = TransactionError
 	t.UpdatedAt = time.Now()
+	t.Description = description
 	err := t.isValid()
 	return err
 }
