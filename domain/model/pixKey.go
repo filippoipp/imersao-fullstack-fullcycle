@@ -16,6 +16,14 @@ type PixKey struct {
 	Status 		string 		`json:"status" valid:"notnull"`
 }
 
+type PixKeyRepositoryInterface interface {
+	RegisterKey(pixKey *PixKey) (*PixKey, error)
+	FindKeyByKind(king string, kind string) (*PixKey, error)
+	AddBank(bank *Bank) error
+	AddAccount(account *Account) error
+	FindAccount(id string) (*Account, error)
+}
+
 func (pixKey *PixKey) isValid() error {
 	_, err := govalidator.ValidateStruct(pixKey)
 
