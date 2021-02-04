@@ -25,7 +25,6 @@ func NewBank(code string, name string) (*Bank, error){
 		Code: code,
 		Name: name,
 	}
-
 	bank.ID = uuid.NewV4().String()
 	bank.CreatedAt = time.Now()
 
